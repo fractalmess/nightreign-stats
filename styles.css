@@ -1,0 +1,421 @@
+/* Elden Ring Nightreign — Build Calculator Styles */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:     #c8a96e;
+  --gold-dim: #8c6e3f;
+  --bg0:      #0d0b08;
+  --bg1:      #1a1710;
+  --bg2:      #24201a;
+  --bg3:      #2e2920;
+  --text:     #e8dcc8;
+  --text-dim: #8c7a5e;
+  --red:      #c0392b;
+  --blue:     #2980b9;
+  --green:    #27ae60;
+  --yellow:   #f39c12;
+  --purple:   #8e44ad;
+  --grade-s:  #ff6b35;
+  --grade-a:  #e74c3c;
+  --grade-b:  #e67e22;
+  --grade-c:  #3498db;
+  --grade-d:  #7f8c8d;
+  --slot-red:    #8b2020;
+  --slot-green:  #1a5c2a;
+  --slot-blue:   #1a3a6e;
+  --slot-yellow: #6e5a10;
+}
+
+body {
+  font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  background: var(--bg0);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────────── */
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+
+header {
+  text-align: center;
+  padding: 28px 20px 16px;
+  border-bottom: 1px solid var(--gold-dim);
+  background: linear-gradient(180deg, #1a160e 0%, var(--bg0) 100%);
+}
+
+header h1 {
+  font-size: 2rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 20px rgba(200, 169, 110, 0.4);
+}
+
+.subtitle {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  margin-top: 4px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.builder {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 20px;
+  padding: 24px 24px 0;
+  flex: 1;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .builder { grid-template-columns: 1fr; }
+}
+
+.panel { display: flex; flex-direction: column; gap: 20px; }
+
+/* ── Cards ─────────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 18px 20px;
+}
+
+.card h2 {
+  font-size: 1.05rem;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--bg3);
+  padding-bottom: 8px;
+}
+
+.slot-count {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Character Grid ────────────────────────────────────────────────────────── */
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.char-btn {
+  background: var(--bg3);
+  border: 1px solid var(--gold-dim);
+  color: var(--text);
+  border-radius: 4px;
+  padding: 8px 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  text-align: center;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.char-btn:hover { background: var(--bg1); border-color: var(--gold); color: var(--gold); }
+.char-btn.active { background: var(--gold-dim); border-color: var(--gold); color: var(--bg0); font-weight: 700; }
+.char-btn.dlc { border-style: dashed; }
+
+.char-btn-name { line-height: 1.2; }
+.dlc-tag { font-size: 0.65rem; background: var(--purple); color: #fff; border-radius: 3px; padding: 1px 4px; }
+
+/* Level Slider */
+.level-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.level-row label { white-space: nowrap; color: var(--text-dim); }
+.level-row label strong { color: var(--gold); }
+
+#levelSlider {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  outline: none;
+  border: 1px solid var(--gold-dim);
+}
+
+#levelSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+}
+
+/* ── Talisman Slots ────────────────────────────────────────────────────────── */
+.talisman-slots { display: flex; flex-direction: column; gap: 14px; }
+
+.talisman-slot { background: var(--bg3); border-radius: 4px; padding: 12px; }
+.slot-label { font-size: 0.78rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+
+select {
+  width: 100%;
+  background: var(--bg1);
+  color: var(--text);
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+select:focus { outline: none; border-color: var(--gold); }
+
+.slot-effects { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.eff-tag { background: rgba(200,169,110,0.12); border: 1px solid var(--gold-dim); border-radius: 3px; padding: 2px 8px; font-size: 0.78rem; color: var(--gold); }
+
+/* ── Relic Slots ───────────────────────────────────────────────────────────── */
+.relic-slots { display: flex; flex-direction: column; gap: 12px; }
+
+.relic-slot {
+  border-radius: 4px;
+  padding: 12px;
+  border-left: 4px solid;
+}
+
+.relic-slot-red    { background: rgba(139,32,32,0.15); border-color: #c0392b; }
+.relic-slot-green  { background: rgba(26,92,42,0.15);  border-color: #27ae60; }
+.relic-slot-blue   { background: rgba(26,58,110,0.15); border-color: #2980b9; }
+.relic-slot-yellow { background: rgba(110,90,16,0.15); border-color: #f39c12; }
+
+.relic-slot-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+
+.relic-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.relic-dot-red    { background: #c0392b; }
+.relic-dot-green  { background: #27ae60; }
+.relic-dot-blue   { background: #2980b9; }
+.relic-dot-yellow { background: #f39c12; }
+
+.relic-slot-header select { flex: 1; }
+
+.relic-effects-list { display: flex; flex-direction: column; gap: 8px; }
+
+.relic-effect-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.relic-effect-row label {
+  white-space: nowrap;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  min-width: 60px;
+}
+
+.relic-effect-row select { flex: 1; }
+
+/* ── Character Info ────────────────────────────────────────────────────────── */
+.char-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.char-desc { font-size: 0.88rem; color: var(--text-dim); margin-top: 4px; line-height: 1.5; }
+
+.scaling-badges { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  background: var(--bg3);
+  border: 1px solid var(--gold-dim);
+  white-space: nowrap;
+}
+
+.badge strong { margin-left: 4px; }
+.badge-s strong { color: var(--grade-s); }
+.badge-a strong { color: var(--grade-a); }
+.badge-b strong { color: var(--grade-b); }
+.badge-c strong { color: var(--grade-c); }
+.badge-d strong { color: var(--grade-d); }
+
+.abilities-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 700px) {
+  .abilities-row { grid-template-columns: 1fr; }
+}
+
+.ability {
+  background: var(--bg3);
+  border-radius: 4px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--gold-dim);
+}
+
+.ability-type {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.ability-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.ability-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ── Stat Display ──────────────────────────────────────────────────────────── */
+.stat-level { font-size: 0.8rem; color: var(--text-dim); font-weight: normal; text-transform: none; letter-spacing: 0; }
+
+.stat-group { margin-bottom: 16px; }
+.stat-group h3 { font-size: 0.82rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+
+.stat-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 80px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.stat-label { font-size: 0.85rem; color: var(--text-dim); }
+
+.stat-bar-wrap {
+  height: 8px;
+  background: var(--bg3);
+  border-radius: 4px;
+  overflow: visible;
+  position: relative;
+}
+
+.stat-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.stat-bar-hp      { background: linear-gradient(90deg, #8b0000, #e74c3c); }
+.stat-bar-fp      { background: linear-gradient(90deg, #1a3a6e, #2980b9); }
+.stat-bar-stamina { background: linear-gradient(90deg, #1a5c2a, #27ae60); }
+.stat-bar-attr    { background: linear-gradient(90deg, var(--gold-dim), var(--gold)); }
+
+/* Ghost bar showing max at lvl 15 */
+.stat-bar-max {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 4px;
+  background: rgba(200,169,110,0.08);
+  border-right: 1px solid rgba(200,169,110,0.25);
+  pointer-events: none;
+}
+
+.stat-value {
+  font-size: 0.9rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-max { color: var(--text-dim); font-size: 0.8rem; }
+.stat-up   { color: #27ae60; }
+.stat-down { color: #c0392b; }
+.stat-delta { font-size: 0.75rem; margin-left: 4px; }
+
+/* Bonus rows */
+.bonus-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--bg3);
+  font-size: 0.88rem;
+}
+
+.bonus-row:last-child { border-bottom: none; }
+.bonus-label { color: var(--text-dim); }
+.bonus-value { font-weight: 700; }
+.bonus-pos { color: #27ae60; }
+.bonus-neg { color: #c0392b; }
+
+.empty-stat { font-size: 0.82rem; color: var(--text-dim); font-style: italic; }
+
+/* Modifier List */
+.modifier-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+.modifier-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 0.86rem;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--bg3);
+}
+
+.modifier-list li:last-child { border-bottom: none; }
+
+.mod-source {
+  font-size: 0.78rem;
+  color: var(--gold);
+  white-space: nowrap;
+  min-width: 140px;
+}
+
+.mod-label { color: var(--text-dim); }
+
+/* No char msg */
+.no-char-msg { text-align: center; color: var(--text-dim); font-style: italic; padding: 20px 0; }
+
+/* ── Footer ────────────────────────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 24px;
+  border-top: 1px solid var(--gold-dim);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+footer a { color: var(--gold); text-decoration: none; }
+footer a:hover { text-decoration: underline; }

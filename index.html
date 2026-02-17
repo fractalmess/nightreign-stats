@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elden Ring Nightreign — Build Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <header>
+      <h1>Elden Ring: Nightreign</h1>
+      <p class="subtitle">Nightfarer Build Calculator</p>
+    </header>
+
+    <main class="builder">
+
+      <!-- LEFT: Selectors -->
+      <div class="panel panel-left">
+
+        <!-- Character -->
+        <section class="card" id="char-section">
+          <h2>Nightfarer</h2>
+          <div class="char-grid" id="charGrid"></div>
+          <div class="level-row" id="levelRow" style="display:none">
+            <label for="levelSlider">Level: <strong id="levelDisplay">1</strong></label>
+            <input type="range" id="levelSlider" min="1" max="15" value="1">
+          </div>
+        </section>
+
+        <!-- Talismans (2 slots) -->
+        <section class="card" id="talisman-section">
+          <h2>Talismans <span class="slot-count">(2 slots)</span></h2>
+          <div class="talisman-slots">
+            <div class="talisman-slot" id="talismanSlot0">
+              <div class="slot-label">Slot 1</div>
+              <select id="talismanSelect0" onchange="onTalismanChange(0)">
+                <option value="">— None —</option>
+              </select>
+              <div class="slot-effects" id="talismanEffects0"></div>
+            </div>
+            <div class="talisman-slot" id="talismanSlot1">
+              <div class="slot-label">Slot 2</div>
+              <select id="talismanSelect1" onchange="onTalismanChange(1)">
+                <option value="">— None —</option>
+              </select>
+              <div class="slot-effects" id="talismanEffects1"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Relics (4 vessel slots) -->
+        <section class="card" id="relic-section">
+          <h2>Relics <span class="slot-count">(4 vessel slots)</span></h2>
+          <div class="relic-slots" id="relicSlots">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT: Calculated Stats -->
+      <div class="panel panel-right">
+
+        <!-- Character Info -->
+        <section class="card" id="char-info" style="display:none">
+          <div class="char-header">
+            <div>
+              <h2 id="charName">—</h2>
+              <p id="charDesc" class="char-desc"></p>
+            </div>
+            <div class="scaling-badges" id="scalingBadges"></div>
+          </div>
+          <div class="abilities-row" id="abilitiesRow"></div>
+        </section>
+
+        <!-- Stat Readout -->
+        <section class="card" id="stats-section">
+          <h2>Final Stats <span class="stat-level" id="statLevelLabel"></span></h2>
+
+          <div class="stat-group">
+            <h3>Resources</h3>
+            <div class="stat-bars" id="resourceStats"></div>
+          </div>
+
+          <div class="stat-group">
+            <h3>Attributes</h3>
+            <div class="stat-bars" id="attributeStats"></div>
+          </div>
+
+          <div class="stat-group">
+            <h3>Damage Bonuses</h3>
+            <div class="stat-bars" id="damageStats"></div>
+          </div>
+
+          <div class="stat-group">
+            <h3>Defense Bonuses</h3>
+            <div class="stat-bars" id="defenseStats"></div>
+          </div>
+
+          <div class="stat-group">
+            <h3>Utility</h3>
+            <div class="stat-bars" id="utilityStats"></div>
+          </div>
+
+          <div class="no-char-msg" id="noCharMsg">Select a Nightfarer to begin</div>
+        </section>
+
+        <!-- Active Modifiers -->
+        <section class="card" id="modifiers-section" style="display:none">
+          <h2>Active Modifiers</h2>
+          <ul class="modifier-list" id="modifierList"></ul>
+        </section>
+
+      </div>
+    </main>
+
+    <footer>
+      <p>Data sourced from <a href="https://eldenringnightreign.wiki.fextralife.com" target="_blank">Fextralife Wiki</a> and <a href="https://en.bandainamcoent.eu/elden-ring/elden-ring-nightreign/characters" target="_blank">Bandai Namco</a>. This is a fan tool — not affiliated with FromSoftware or Bandai Namco.</p>
+    </footer>
+
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
