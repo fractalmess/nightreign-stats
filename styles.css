@@ -316,6 +316,20 @@ select:focus { outline: none; border-color: var(--gold); }
 .relic-slot-yellow { background: rgba(110,90,16,0.15); border-color: #f39c12; }
 .relic-slot-white  { background: rgba(200,200,200,0.08); border-color: #bbb; }
 
+.relic-slot-deep {
+  opacity: 0.85;
+  border-style: dashed;
+}
+.relic-deep-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  opacity: 0.7;
+}
+
 .relic-slot-header {
   display: flex;
   align-items: center;
