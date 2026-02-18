@@ -35,26 +35,69 @@
           <div class="talisman-slots">
             <div class="talisman-slot" id="talismanSlot0">
               <div class="slot-label">Slot 1</div>
-              <select id="talismanSelect0" onchange="onTalismanChange(0)">
-                <option value="">— None —</option>
-              </select>
+              <div class="custom-select" id="talismanDrop0" onclick="toggleDrop('talismanDrop0')">
+                <div class="custom-select-display" id="talismanDisplay0">— None —</div>
+                <div class="custom-select-list" id="talismanList0"></div>
+              </div>
               <div class="slot-effects" id="talismanEffects0"></div>
             </div>
             <div class="talisman-slot" id="talismanSlot1">
               <div class="slot-label">Slot 2</div>
-              <select id="talismanSelect1" onchange="onTalismanChange(1)">
-                <option value="">— None —</option>
-              </select>
+              <div class="custom-select" id="talismanDrop1" onclick="toggleDrop('talismanDrop1')">
+                <div class="custom-select-display" id="talismanDisplay1">— None —</div>
+                <div class="custom-select-list" id="talismanList1"></div>
+              </div>
               <div class="slot-effects" id="talismanEffects1"></div>
             </div>
           </div>
         </section>
 
-        <!-- Relics (4 vessel slots) -->
-        <section class="card" id="relic-section">
-          <h2>Relics <span class="slot-count">(4 vessel slots)</span></h2>
+        <!-- Vessel & Relics -->
+        <section class="card" id="vessel-section">
+          <h2>Vessel <span class="slot-count">(3 relic slots)</span></h2>
+          <div class="deep-toggle-row">
+            <label class="toggle-label" for="deepToggle">
+              <input type="checkbox" id="deepToggle" onchange="onDeepToggle()">
+              <span class="toggle-switch"></span>
+              <span class="toggle-text">Deep of Night</span>
+            </label>
+          </div>
+          <div class="vessel-select-row">
+            <div class="custom-select vessel-custom-select" id="vesselDrop" onclick="toggleDrop('vesselDrop')">
+              <div class="custom-select-display" id="vesselDisplay">— Select a Vessel —</div>
+              <div class="custom-select-list" id="vesselList"></div>
+            </div>
+            <button class="compare-btn" id="compareBtn" onclick="toggleComparison()" title="Compare Vessels">Compare</button>
+          </div>
+          <div class="vessel-slot-preview" id="vesselSlotPreview"></div>
           <div class="relic-slots" id="relicSlots">
-            <!-- Rendered by JS -->
+            <!-- Rendered by JS based on vessel selection -->
+          </div>
+        </section>
+
+        <!-- Vessel Comparison (hidden by default) -->
+        <section class="card vessel-compare" id="vesselCompare" style="display:none">
+          <h2>Vessel Comparison</h2>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <select id="compareVesselA" onchange="renderComparison()">
+                <option value="">— Vessel A —</option>
+              </select>
+              <div class="compare-slots" id="compareSlotsA"></div>
+              <div class="compare-relics" id="compareRelicsA"></div>
+            </div>
+            <div class="compare-vs">vs</div>
+            <div class="compare-col">
+              <select id="compareVesselB" onchange="renderComparison()">
+                <option value="">— Vessel B —</option>
+              </select>
+              <div class="compare-slots" id="compareSlotsB"></div>
+              <div class="compare-relics" id="compareRelicsB"></div>
+            </div>
+          </div>
+          <div class="compare-stats-diff" id="compareStatsDiff" style="display:none">
+            <h3>Stat Comparison</h3>
+            <div id="compareStatsBody"></div>
           </div>
         </section>
 

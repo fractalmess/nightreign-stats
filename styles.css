@@ -186,6 +186,121 @@ select:focus { outline: none; border-color: var(--gold); }
 .slot-effects { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .eff-tag { background: rgba(200,169,110,0.12); border: 1px solid var(--gold-dim); border-radius: 3px; padding: 2px 8px; font-size: 0.78rem; color: var(--gold); }
 
+/* ── Custom Dropdowns ─────────────────────────────────────────────────────── */
+.custom-select {
+  position: relative;
+  width: 100%;
+  background: var(--bg1);
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.88rem;
+}
+
+.custom-select-display {
+  padding: 6px 28px 6px 8px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.custom-select-display.has-value { color: var(--text); }
+
+.custom-select-display::after {
+  content: '\25BC';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+
+.custom-select.open { border-color: var(--gold); }
+.custom-select.open .custom-select-display::after { content: '\25B2'; }
+
+.custom-select-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  z-index: 100;
+  background: var(--bg1);
+  border: 1px solid var(--gold);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.custom-select.open .custom-select-list { display: block; }
+
+.custom-option {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--bg3);
+  transition: background 0.1s;
+}
+
+.custom-option:last-child { border-bottom: none; }
+.custom-option:hover { background: var(--bg3); }
+
+.custom-option-name {
+  font-size: 0.86rem;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.custom-option-effects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.eff-tag-mini {
+  font-size: 0.7rem;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: rgba(200,169,110,0.1);
+  color: var(--gold);
+  border: 1px solid rgba(200,169,110,0.2);
+}
+
+.eff-tag-mini.eff-neg { color: #c0392b; border-color: rgba(192,57,43,0.3); background: rgba(192,57,43,0.1); }
+
+.custom-option-slots {
+  display: flex;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.slot-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.slot-dot-red    { background: #c0392b; }
+.slot-dot-green  { background: #27ae60; }
+.slot-dot-blue   { background: #2980b9; }
+.slot-dot-yellow { background: #f39c12; }
+.slot-dot-white  { background: #ddd; border-color: #999; }
+
+.vessel-custom-select { flex: 1; }
+
+/* scrollbar for dropdown lists */
+.custom-select-list::-webkit-scrollbar { width: 6px; }
+.custom-select-list::-webkit-scrollbar-track { background: var(--bg1); }
+.custom-select-list::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
 /* ── Relic Slots ───────────────────────────────────────────────────────────── */
 .relic-slots { display: flex; flex-direction: column; gap: 12px; }
 
@@ -199,6 +314,7 @@ select:focus { outline: none; border-color: var(--gold); }
 .relic-slot-green  { background: rgba(26,92,42,0.15);  border-color: #27ae60; }
 .relic-slot-blue   { background: rgba(26,58,110,0.15); border-color: #2980b9; }
 .relic-slot-yellow { background: rgba(110,90,16,0.15); border-color: #f39c12; }
+.relic-slot-white  { background: rgba(200,200,200,0.08); border-color: #bbb; }
 
 .relic-slot-header {
   display: flex;
@@ -218,6 +334,7 @@ select:focus { outline: none; border-color: var(--gold); }
 .relic-dot-green  { background: #27ae60; }
 .relic-dot-blue   { background: #2980b9; }
 .relic-dot-yellow { background: #f39c12; }
+.relic-dot-white  { background: #ddd; border: 1px solid #999; }
 
 .relic-slot-header select { flex: 1; }
 
@@ -419,3 +536,256 @@ footer {
 
 footer a { color: var(--gold); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
+
+/* ── Deep of Night Toggle ─────────────────────────────────────────────────── */
+.deep-toggle-row {
+  margin-bottom: 12px;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-label input { display: none; }
+
+.toggle-switch {
+  width: 38px;
+  height: 20px;
+  background: var(--bg3);
+  border: 1px solid var(--gold-dim);
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: var(--text-dim);
+  border-radius: 50%;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.toggle-label input:checked + .toggle-switch {
+  background: #1a0a2e;
+  border-color: #6a3aad;
+}
+
+.toggle-label input:checked + .toggle-switch::after {
+  transform: translateX(18px);
+  background: #a855f7;
+  box-shadow: 0 0 6px rgba(168, 85, 247, 0.6);
+}
+
+.toggle-text {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.toggle-label input:checked ~ .toggle-text {
+  color: #a855f7;
+  text-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+}
+
+/* ── Vessel Selector ──────────────────────────────────────────────────────── */
+.vessel-select-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.vessel-select-row select { flex: 1; }
+
+.compare-btn {
+  background: var(--bg3);
+  border: 1px solid var(--gold-dim);
+  color: var(--text-dim);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.compare-btn:hover { border-color: var(--gold); color: var(--gold); }
+.compare-btn.active { background: var(--gold-dim); color: var(--bg0); border-color: var(--gold); }
+
+/* Slot preview pips */
+.vessel-slot-preview {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.slot-pip {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.slot-pip-red    { background: #c0392b; }
+.slot-pip-green  { background: #27ae60; }
+.slot-pip-blue   { background: #2980b9; }
+.slot-pip-yellow { background: #f39c12; }
+.slot-pip-white  { background: #ddd; border-color: #999; }
+
+/* ── Vessel Comparison Panel ──────────────────────────────────────────────── */
+.vessel-compare { border-color: var(--gold); }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.compare-vs {
+  align-self: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding-top: 36px;
+}
+
+.compare-col select { margin-bottom: 10px; }
+
+.compare-vessel-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.compare-slot-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.compare-slot-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  border-left: 3px solid;
+}
+
+.compare-slot-chip-red    { background: rgba(139,32,32,0.2); border-color: #c0392b; color: #e8a8a0; }
+.compare-slot-chip-green  { background: rgba(26,92,42,0.2);  border-color: #27ae60; color: #a0e8b0; }
+.compare-slot-chip-blue   { background: rgba(26,58,110,0.2); border-color: #2980b9; color: #a0c8e8; }
+.compare-slot-chip-yellow { background: rgba(110,90,16,0.2); border-color: #f39c12; color: #e8d8a0; }
+.compare-slot-chip-white  { background: rgba(200,200,200,0.1); border-color: #bbb; color: #ddd; }
+
+.compare-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.compare-count {
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.compare-count-red    { background: rgba(139,32,32,0.3); color: #e8a8a0; }
+.compare-count-green  { background: rgba(26,92,42,0.3);  color: #a0e8b0; }
+.compare-count-blue   { background: rgba(26,58,110,0.3); color: #a0c8e8; }
+.compare-count-yellow { background: rgba(110,90,16,0.3); color: #e8d8a0; }
+.compare-count-white  { background: rgba(200,200,200,0.15); color: #ddd; }
+
+/* ── Comparison Relic Selectors ──────────────────────────────────────────── */
+.compare-relic-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.compare-relic-row .slot-dot {
+  flex-shrink: 0;
+}
+
+.compare-relic-sel {
+  flex: 1;
+  background: var(--bg1);
+  border: 1px solid var(--bg3);
+  color: var(--text);
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.compare-relic-sel:focus {
+  border-color: var(--gold-dim);
+  outline: none;
+}
+
+/* ── Comparison Stat Diff Table ──────────────────────────────────────────── */
+.compare-stats-diff {
+  margin-top: 16px;
+  border-top: 1px solid var(--bg3);
+  padding-top: 12px;
+}
+
+.compare-stats-diff h3 {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+
+.compare-stat-row {
+  display: grid;
+  grid-template-columns: 1fr 70px 70px 70px;
+  gap: 4px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--bg3);
+  font-size: 0.84rem;
+}
+
+.compare-stat-row:last-child { border-bottom: none; }
+
+.compare-stat-header {
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--gold-dim);
+  padding-bottom: 6px;
+  margin-bottom: 2px;
+}
+
+.compare-stat-label {
+  color: var(--text-dim);
+}
+
+.compare-stat-val {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.compare-stat-val.stat-up   { color: #27ae60; }
+.compare-stat-val.stat-down { color: #c0392b; }

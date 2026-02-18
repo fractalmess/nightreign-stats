@@ -196,37 +196,178 @@ const TALISMANS = [
   { id: 'hammer_talisman', name: 'Hammer Talisman', effects: [{ stat: 'guardBreak', type: 'percent', value: 50, label: 'Guard breaking +50%' }] },
 ];
 
-// Relic effect categories (procedurally generated in game, so we provide common presets)
-const RELIC_EFFECTS = [
-  { id: 'phys_dmg', label: 'Physical Damage +8.5%', stat: 'physAtk', type: 'multiplier', value: 1.085 },
-  { id: 'phys_dmg_lg', label: 'Physical Damage +10%', stat: 'physAtk', type: 'multiplier', value: 1.1 },
-  { id: 'magic_dmg', label: 'Magic Damage +8.5%', stat: 'magicAtk', type: 'multiplier', value: 1.085 },
-  { id: 'magic_dmg_lg', label: 'Magic Damage +10%', stat: 'magicAtk', type: 'multiplier', value: 1.1 },
-  { id: 'fire_dmg', label: 'Fire Damage +8.5%', stat: 'fireAtk', type: 'multiplier', value: 1.085 },
-  { id: 'lightning_dmg', label: 'Lightning Damage +8.5%', stat: 'lightningAtk', type: 'multiplier', value: 1.085 },
-  { id: 'holy_dmg', label: 'Holy Damage +8.5%', stat: 'holyAtk', type: 'multiplier', value: 1.085 },
-  { id: 'max_hp', label: 'Max HP +10%', stat: 'hp', type: 'percent', value: 10 },
-  { id: 'max_fp', label: 'Max FP +10%', stat: 'fp', type: 'percent', value: 10 },
-  { id: 'max_stamina', label: 'Max Stamina +10%', stat: 'stamina', type: 'percent', value: 10 },
-  { id: 'skill_cooldown', label: 'Skill Cooldown -15%', stat: 'cooldown', type: 'percent', value: -15 },
+// Relic effects — standard (available in both regular and Deep of Night)
+const RELIC_EFFECTS_STANDARD = [
+  // ── Elemental Damage ──
+  { id: 'phys_dmg_1', label: 'Physical Damage +4%', stat: 'physAtk', type: 'percent', value: 4 },
+  { id: 'phys_dmg_2', label: 'Physical Damage +5%', stat: 'physAtk', type: 'percent', value: 5 },
+  { id: 'phys_dmg_3', label: 'Physical Damage +6%', stat: 'physAtk', type: 'percent', value: 6 },
+  { id: 'fire_dmg_1', label: 'Fire Damage +4.5%', stat: 'fireAtk', type: 'percent', value: 4.5 },
+  { id: 'fire_dmg_2', label: 'Fire Damage +5.5%', stat: 'fireAtk', type: 'percent', value: 5.5 },
+  { id: 'fire_dmg_3', label: 'Fire Damage +6.5%', stat: 'fireAtk', type: 'percent', value: 6.5 },
+  { id: 'fire_dmg_4', label: 'Fire Damage +8.5%', stat: 'fireAtk', type: 'percent', value: 8.5 },
+  { id: 'magic_dmg_1', label: 'Magic Damage +4.5%', stat: 'magicAtk', type: 'percent', value: 4.5 },
+  { id: 'magic_dmg_2', label: 'Magic Damage +5.5%', stat: 'magicAtk', type: 'percent', value: 5.5 },
+  { id: 'magic_dmg_3', label: 'Magic Damage +6.5%', stat: 'magicAtk', type: 'percent', value: 6.5 },
+  { id: 'lightning_dmg_1', label: 'Lightning Damage +4.5%', stat: 'lightningAtk', type: 'percent', value: 4.5 },
+  { id: 'lightning_dmg_2', label: 'Lightning Damage +5.5%', stat: 'lightningAtk', type: 'percent', value: 5.5 },
+  { id: 'lightning_dmg_3', label: 'Lightning Damage +6.5%', stat: 'lightningAtk', type: 'percent', value: 6.5 },
+  { id: 'holy_dmg_1', label: 'Holy Damage +6.5%', stat: 'holyAtk', type: 'percent', value: 6.5 },
+  // ── Sorceries & Incantations ──
+  { id: 'sorcery_1', label: 'Improved Sorceries (1.05x)', stat: 'magicAtk', type: 'multiplier', value: 1.05 },
+  { id: 'sorcery_2', label: 'Improved Sorceries (1.085x)', stat: 'magicAtk', type: 'multiplier', value: 1.085 },
+  { id: 'sorcery_3', label: 'Improved Sorceries (1.1x)', stat: 'magicAtk', type: 'multiplier', value: 1.1 },
+  { id: 'incant_1', label: 'Improved Incantations (1.05x)', stat: 'holyAtk', type: 'multiplier', value: 1.05 },
+  { id: 'incant_2', label: 'Improved Incantations (1.085x)', stat: 'holyAtk', type: 'multiplier', value: 1.085 },
+  { id: 'incant_3', label: 'Improved Incantations (1.1x)', stat: 'holyAtk', type: 'multiplier', value: 1.1 },
+  { id: 'spell_duration', label: 'Extend Spell Duration +50%', stat: 'spellDuration', type: 'special', value: 50 },
+  // ── Critical & Counter ──
+  { id: 'crit_dmg_1', label: 'Critical Hit Damage +18%', stat: 'criticalAtk', type: 'percent', value: 18 },
+  { id: 'crit_dmg_2', label: 'Critical Hit Damage +23%', stat: 'criticalAtk', type: 'percent', value: 23 },
+  { id: 'guard_counter_1', label: 'Guard Counter Damage +18%', stat: 'guardCounter', type: 'percent', value: 18 },
+  { id: 'guard_counter_2', label: 'Guard Counter (1.25x)', stat: 'guardCounter', type: 'multiplier', value: 1.25 },
+  { id: 'guard_counter_3', label: 'Guard Counter (1.29x)', stat: 'guardCounter', type: 'multiplier', value: 1.29 },
+  // ── Weapon Type ──
+  { id: 'weapon_type_atk', label: 'Weapon Type Attack +9%', stat: 'physAtk', type: 'percent', value: 9 },
+  { id: 'throwing_knife', label: 'Throwing Knife Damage +15%', stat: 'rangedAtk', type: 'percent', value: 15 },
+  { id: 'throwing_pot', label: 'Throwing Pot Damage +15%', stat: 'rangedAtk', type: 'percent', value: 15 },
+  { id: 'roar_breath', label: 'Roar & Breath Attacks +15%', stat: 'roarAtk', type: 'percent', value: 15 },
+  // ── Skill & Ultimate ──
+  { id: 'art_gauge_kill', label: 'Art Gauge +5% per Kill', stat: 'ultimateAtk', type: 'special', value: 5 },
+  { id: 'art_gauge_fill_1', label: 'Art Gauge Fill +5%', stat: 'ultimateAtk', type: 'percent', value: 5 },
+  { id: 'art_gauge_fill_2', label: 'Art Gauge Fill +7.5%', stat: 'ultimateAtk', type: 'percent', value: 7.5 },
+  { id: 'art_gauge_fill_3', label: 'Art Gauge Fill +10%', stat: 'ultimateAtk', type: 'percent', value: 10 },
   { id: 'skill_atk', label: 'Skill Attack Power +10%', stat: 'skillAtk', type: 'percent', value: 10 },
-  { id: 'ultimate_power', label: 'Ultimate Art Power +10%', stat: 'ultimateAtk', type: 'percent', value: 10 },
-  { id: 'crit_rate', label: 'Critical Rate +5%', stat: 'critRate', type: 'percent', value: 5 },
+  { id: 'skill_cooldown', label: 'Skill Cooldown -15%', stat: 'cooldown', type: 'percent', value: -15 },
+  // ── Resources ──
+  { id: 'max_hp', label: 'Max HP +100', stat: 'hp', type: 'flat', value: 100 },
+  { id: 'max_fp', label: 'Max FP +25', stat: 'fp', type: 'flat', value: 25 },
+  { id: 'max_stamina', label: 'Max Stamina +10', stat: 'stamina', type: 'flat', value: 10 },
+  { id: 'hp_regen', label: 'Continuous HP Recovery +1/s', stat: 'hpRegen', type: 'flat', value: 1 },
+  { id: 'fp_regen', label: 'FP Restoration on Attack +1', stat: 'fpRegen', type: 'flat', value: 1 },
+  { id: 'stamina_regen_atk', label: 'Stamina on Attack +2', stat: 'staminaRegen', type: 'flat', value: 2 },
+  { id: 'stamina_regen_atk2', label: 'Stamina on Attack +3', stat: 'staminaRegen', type: 'flat', value: 3 },
+  { id: 'hp_on_guard', label: 'HP on Guard +8', stat: 'hpRegen', type: 'special', value: 8 },
+  { id: 'hp_on_weapon_atk', label: 'HP on Weapon Attack +10', stat: 'hpRegen', type: 'special', value: 10 },
+  { id: 'hp_on_counter', label: 'HP on Thrusting Counter +2.5%', stat: 'hpRegen', type: 'special', value: 2.5 },
+  // ── Damage Negation ──
+  { id: 'phys_neg_1', label: 'Physical Negation +10%', stat: 'physNeg', type: 'percent', value: 10 },
+  { id: 'phys_neg_2', label: 'Physical Negation +10.5%', stat: 'physNeg', type: 'percent', value: 10.5 },
+  { id: 'phys_neg_3', label: 'Physical Negation +12%', stat: 'physNeg', type: 'percent', value: 12 },
+  { id: 'fire_neg_1', label: 'Fire Negation +10%', stat: 'fireNeg', type: 'percent', value: 10 },
+  { id: 'fire_neg_2', label: 'Fire Negation +15%', stat: 'fireNeg', type: 'percent', value: 15 },
+  { id: 'fire_neg_3', label: 'Fire Negation +16%', stat: 'fireNeg', type: 'percent', value: 16 },
+  { id: 'magic_neg_1', label: 'Magic Negation +10%', stat: 'magicNeg', type: 'percent', value: 10 },
+  { id: 'magic_neg_2', label: 'Magic Negation +15%', stat: 'magicNeg', type: 'percent', value: 15 },
+  { id: 'magic_neg_3', label: 'Magic Negation +16%', stat: 'magicNeg', type: 'percent', value: 16 },
+  { id: 'lightning_neg_1', label: 'Lightning Negation +10%', stat: 'lightningNeg', type: 'percent', value: 10 },
+  { id: 'lightning_neg_2', label: 'Lightning Negation +15%', stat: 'lightningNeg', type: 'percent', value: 15 },
+  { id: 'lightning_neg_3', label: 'Lightning Negation +16%', stat: 'lightningNeg', type: 'percent', value: 16 },
+  { id: 'holy_neg_1', label: 'Holy Negation +10%', stat: 'holyNeg', type: 'percent', value: 10 },
+  { id: 'holy_neg_2', label: 'Holy Negation +15%', stat: 'holyNeg', type: 'percent', value: 15 },
+  { id: 'holy_neg_3', label: 'Holy Negation +16%', stat: 'holyNeg', type: 'percent', value: 16 },
+  { id: 'affinity_neg_1', label: 'All Elemental Negation +10.5%', stat: 'nonPhysNeg', type: 'percent', value: 10.5 },
+  { id: 'affinity_neg_2', label: 'All Elemental Negation +12%', stat: 'nonPhysNeg', type: 'percent', value: 12 },
+  { id: 'low_hp_neg', label: 'Dmg Negation at Low HP +25%', stat: 'allNeg', type: 'special', value: 25 },
+  // ── Poise ──
+  { id: 'poise_1', label: 'Poise +1 (Stance Dmg -5%)', stat: 'poise', type: 'percent', value: 5 },
+  { id: 'poise_2', label: 'Poise +2 (Stance Dmg -10%)', stat: 'poise', type: 'percent', value: 10 },
+  { id: 'poise_3', label: 'Poise +3 (Stance Dmg -15%)', stat: 'poise', type: 'percent', value: 15 },
+  // ── Attributes ──
+  { id: 'vigor_1', label: 'Vigor +1 (HP +20)', stat: 'hp', type: 'flat', value: 20 },
+  { id: 'vigor_2', label: 'Vigor +2 (HP +40)', stat: 'hp', type: 'flat', value: 40 },
+  { id: 'vigor_3', label: 'Vigor +3 (HP +60)', stat: 'hp', type: 'flat', value: 60 },
+  { id: 'mind_1', label: 'Mind +1 (FP +5)', stat: 'fp', type: 'flat', value: 5 },
+  { id: 'mind_2', label: 'Mind +2 (FP +10)', stat: 'fp', type: 'flat', value: 10 },
+  { id: 'mind_3', label: 'Mind +3 (FP +15)', stat: 'fp', type: 'flat', value: 15 },
+  { id: 'end_1', label: 'Endurance +1 (Stamina +2)', stat: 'stamina', type: 'flat', value: 2 },
+  { id: 'end_2', label: 'Endurance +2 (Stamina +4)', stat: 'stamina', type: 'flat', value: 4 },
+  { id: 'end_3', label: 'Endurance +3 (Stamina +6)', stat: 'stamina', type: 'flat', value: 6 },
+  // ── Status Resistance ──
+  { id: 'poison_res', label: 'Poison Resistance +110', stat: 'poisonRes', type: 'flat', value: 110 },
+  { id: 'bleed_res', label: 'Blood Loss Resistance +110', stat: 'bleedRes', type: 'flat', value: 110 },
+  { id: 'frost_res', label: 'Frost Resistance +110', stat: 'frostRes', type: 'flat', value: 110 },
+  { id: 'status_res_all', label: 'All Status Resistance +130', stat: 'statusRes', type: 'flat', value: 130 },
+  // ── Utility ──
+  { id: 'fp_cost_1', label: 'FP Consumption (0.92x)', stat: 'skillFpCost', type: 'multiplier', value: 0.92 },
+  { id: 'fp_cost_2', label: 'FP Consumption (0.87x)', stat: 'skillFpCost', type: 'multiplier', value: 0.87 },
+  { id: 'fp_cost_3', label: 'FP Consumption (0.84x)', stat: 'skillFpCost', type: 'multiplier', value: 0.84 },
   { id: 'item_discovery', label: 'Item Discovery +20', stat: 'itemDiscovery', type: 'flat', value: 20 },
   { id: 'rune_gain', label: 'Rune Gain +10%', stat: 'runes', type: 'percent', value: 10 },
-  { id: 'phys_neg', label: 'Physical Negation +5%', stat: 'physNeg', type: 'percent', value: 5 },
-  { id: 'all_dmg_neg', label: 'All Damage Negation +5%', stat: 'allNeg', type: 'percent', value: 5 },
-  { id: 'poise', label: 'Poise +15%', stat: 'poise', type: 'percent', value: 15 },
-  { id: 'stamina_regen', label: 'Stamina Regen +5/s', stat: 'staminaRegen', type: 'flat', value: 5 },
-  { id: 'fp_regen', label: 'FP Regen +2/s', stat: 'fpRegen', type: 'flat', value: 2 },
-  { id: 'hp_regen', label: 'HP Regen +3/s', stat: 'hpRegen', type: 'flat', value: 3 },
-  { id: 'poison_res', label: 'Poison Resistance +50', stat: 'poisonRes', type: 'flat', value: 50 },
-  { id: 'bleed_res', label: 'Blood Loss Resistance +50', stat: 'bleedRes', type: 'flat', value: 50 },
-  { id: 'frost_res', label: 'Frost Resistance +50', stat: 'frostRes', type: 'flat', value: 50 },
+  { id: 'rune_crit', label: 'Runes +300 on Critical Hit', stat: 'runes', type: 'special', value: 300 },
+  { id: 'flask_ally', label: 'Flask Heals Allies (50%)', stat: 'flaskAlly', type: 'special', value: 50 },
+  // ── Conditional Offensive ──
+  { id: 'atk_vs_poison', label: 'Attack +10% vs Poisoned', stat: 'physAtk', type: 'special', value: 10 },
+  { id: 'atk_vs_frost', label: 'Attack +10% vs Frostbitten', stat: 'physAtk', type: 'special', value: 10 },
+  { id: 'atk_vs_rot', label: 'Attack +10% vs Scarlet Rot', stat: 'physAtk', type: 'special', value: 10 },
+  { id: 'atk_after_hit', label: 'Attack +15% for 10s After Hit', stat: 'physAtk', type: 'special', value: 15 },
+  { id: 'atk_weapon_switch', label: 'Attack +10% on Weapon Switch', stat: 'physAtk', type: 'special', value: 10 },
+  { id: 'atk_grease', label: 'Attack +10% After Grease (30s)', stat: 'physAtk', type: 'special', value: 10 },
+  // ── Charge Attack Procs ──
+  { id: 'charge_black_flame', label: 'Charge Atk: Black Flames', stat: 'chargeProc', type: 'special', value: 1 },
+  { id: 'charge_ice', label: 'Charge Atk: Ice Storm', stat: 'chargeProc', type: 'special', value: 1 },
+  { id: 'charge_lightning', label: 'Charge Atk: Lightning', stat: 'chargeProc', type: 'special', value: 1 },
+  { id: 'charge_holy', label: 'Charge Atk: Holy Shockwave', stat: 'chargeProc', type: 'special', value: 1 },
+  { id: 'charge_magma', label: 'Charge Atk: Magma', stat: 'chargeProc', type: 'special', value: 1 },
+  { id: 'charge_sleep', label: 'Charge Atk: Sleep Mist', stat: 'chargeProc', type: 'special', value: 1 },
+  // ── Attack Procs ──
+  { id: 'atk_wraiths', label: 'Attacks Summon Wraiths', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'atk_spirits', label: 'Attacks Call Vengeful Spirits', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'atk_lava', label: 'Attacks Generate Lava', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'atk_charm', label: 'Attacks Release Charm Mist', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'atk_frost_mist', label: 'Attacks Release Frost Mist', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'atk_lightning', label: 'Attacks Unleash Lightning', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'atk_golden_shock', label: 'Attacks: Golden Shockwave', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'instant_death', label: 'Rare Instant Kill Chance', stat: 'atkProc', type: 'special', value: 1 },
+  // ── Starting Armament Affinity ──
+  { id: 'start_fire', label: 'Starting Armament: Fire', stat: 'startAffinity', type: 'special', value: 1 },
+  { id: 'start_magic', label: 'Starting Armament: Magic', stat: 'startAffinity', type: 'special', value: 1 },
+  { id: 'start_lightning', label: 'Starting Armament: Lightning', stat: 'startAffinity', type: 'special', value: 1 },
+  { id: 'start_holy', label: 'Starting Armament: Holy', stat: 'startAffinity', type: 'special', value: 1 },
 ];
 
-// Relic vessel slots (4 slots: red, green, blue, yellow)
-const VESSEL_SLOTS = ['red', 'green', 'blue', 'yellow'];
+// Deep of Night exclusive effects (only available with Deep toggle on)
+const RELIC_EFFECTS_DEEP = [
+  { id: 'deep_crit_hp', label: '[Deep] Critical Hit HP Restore', stat: 'hpRegen', type: 'special', value: 1 },
+  { id: 'deep_crit_fp', label: '[Deep] Critical Hit FP Restore', stat: 'fpRegen', type: 'special', value: 1 },
+  { id: 'deep_guard_hp', label: '[Deep] HP Recovery on Guard', stat: 'hpRegen', type: 'special', value: 1 },
+  { id: 'deep_guard_fp', label: '[Deep] FP Recovery on Guard', stat: 'fpRegen', type: 'special', value: 1 },
+  { id: 'deep_stamina_rec', label: '[Deep] Improved Stamina Recovery', stat: 'staminaRegen', type: 'flat', value: 5 },
+  { id: 'deep_phys_neg', label: '[Deep] Improved Phys. Negation', stat: 'physNeg', type: 'percent', value: 14 },
+  { id: 'deep_affinity_neg', label: '[Deep] Improved Elemental Neg.', stat: 'nonPhysNeg', type: 'percent', value: 14 },
+  { id: 'deep_flask', label: '[Deep] Improved Flask (1.1x)', stat: 'flaskHp', type: 'multiplier', value: 1.1 },
+  { id: 'deep_flask_gradual', label: '[Deep] Flask Gradual Restore', stat: 'hpRegen', type: 'special', value: 1 },
+  { id: 'deep_stance_break', label: '[Deep] Improved Stance-Breaking', stat: 'stanceBreak', type: 'special', value: 1 },
+  { id: 'deep_thrust_counter', label: '[Deep] Improved Thrust Counter', stat: 'thrustCounter', type: 'special', value: 1 },
+  { id: 'deep_despair', label: '[Deep] Power of Despair (Instant Kill)', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'deep_ancestral', label: '[Deep] Ancestral Spirit (Neg. Reduce)', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'deep_endure', label: '[Deep] Stance Break → Endure', stat: 'poise', type: 'special', value: 1 },
+  { id: 'deep_holy_ground', label: '[Deep] Holy Ground at Low HP', stat: 'hpRegen', type: 'special', value: 1 },
+  { id: 'deep_parry_golden', label: '[Deep] Parry → Golden Retaliation', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'deep_guard_holy', label: '[Deep] Guard Counter → Holy Attack', stat: 'holyAtk', type: 'special', value: 1 },
+  { id: 'deep_bleed_buildup', label: '[Deep] Attacks Build Blood Loss', stat: 'atkProc', type: 'special', value: 1 },
+  { id: 'deep_charge_proj', label: '[Deep] Charge Atk: Projectiles', stat: 'chargeProc', type: 'special', value: 1 },
+];
+
+// Combined getter — returns available effects based on Deep of Night toggle
+function getRelicEffects(deepOfNight) {
+  if (deepOfNight) {
+    return [...RELIC_EFFECTS_STANDARD, ...RELIC_EFFECTS_DEEP];
+  }
+  return RELIC_EFFECTS_STANDARD;
+}
+
+// Legacy compat
+const RELIC_EFFECTS = RELIC_EFFECTS_STANDARD;
+
+// Relic scene types by slot color
+const RELIC_SCENES = {
+  red:    { name: 'Burning Scene',   desc: 'Red relics — offensive / fire-aligned' },
+  green:  { name: 'Tranquil Scene',  desc: 'Green relics — healing / nature-aligned' },
+  blue:   { name: 'Drizzly Scene',   desc: 'Blue relics — magic / water-aligned' },
+  yellow: { name: 'Luminous Scene',  desc: 'Yellow relics — holy / lightning-aligned' },
+  white:  { name: 'Universal',       desc: 'Accepts any relic type' },
+};
 
 // Max relics per slot (Delicate=1, Polished=2, Grand=3 effects)
 const RELIC_TIERS = [
@@ -234,3 +375,77 @@ const RELIC_TIERS = [
   { id: 'polished', name: 'Polished', effects: 2 },
   { id: 'grand', name: 'Grand', effects: 3 },
 ];
+
+// Vessel data per character
+const VESSELS = {
+  wylder: [
+    { id: 'wylder_urn',        name: "Wylder's Urn",              slots: ['red', 'yellow', 'yellow'] },
+    { id: 'wylder_goblet',     name: "Wylder's Goblet",           slots: ['red', 'blue', 'green'] },
+    { id: 'wylder_chalice',    name: "Wylder's Chalice",          slots: ['blue', 'yellow', 'white'] },
+    { id: 'wylder_soot',       name: "Soot-Covered Wylder's Urn", slots: ['red', 'red', 'blue'] },
+    { id: 'wylder_sealed',     name: "Sealed Wylder's Urn",       slots: ['yellow', 'yellow', 'red'] },
+  ],
+  guardian: [
+    { id: 'guardian_urn',      name: "Guardian's Urn",              slots: ['red', 'yellow', 'yellow'] },
+    { id: 'guardian_goblet',   name: "Guardian's Goblet",           slots: ['blue', 'blue', 'green'] },
+    { id: 'guardian_chalice',  name: "Guardian's Chalice",          slots: ['blue', 'yellow', 'white'] },
+    { id: 'guardian_soot',     name: "Soot-Covered Guardian's Urn", slots: ['red', 'green', 'green'] },
+    { id: 'guardian_sealed',   name: "Sealed Guardian's Urn",       slots: ['yellow', 'yellow', 'red'] },
+  ],
+  ironeye: [
+    { id: 'ironeye_urn',      name: "Ironeye's Urn",              slots: ['yellow', 'green', 'green'] },
+    { id: 'ironeye_goblet',   name: "Ironeye's Goblet",           slots: ['red', 'blue', 'yellow'] },
+    { id: 'ironeye_chalice',  name: "Ironeye's Chalice",          slots: ['red', 'green', 'white'] },
+    { id: 'ironeye_soot',     name: "Soot-Covered Ironeye's Urn", slots: ['blue', 'yellow', 'yellow'] },
+    { id: 'ironeye_sealed',   name: "Sealed Ironeye's Urn",       slots: ['green', 'green', 'yellow'] },
+  ],
+  duchess: [
+    { id: 'duchess_urn',      name: "Duchess' Urn",              slots: ['red', 'blue', 'blue'] },
+    { id: 'duchess_goblet',   name: "Duchess' Goblet",           slots: ['yellow', 'yellow', 'green'] },
+    { id: 'duchess_chalice',  name: "Duchess' Chalice",          slots: ['blue', 'yellow', 'white'] },
+    { id: 'duchess_soot',     name: "Soot-Covered Duchess' Urn", slots: ['red', 'red', 'green'] },
+    { id: 'duchess_sealed',   name: "Sealed Duchess' Urn",       slots: ['blue', 'blue', 'red'] },
+  ],
+  raider: [
+    { id: 'raider_urn',      name: "Raider's Urn",              slots: ['red', 'green', 'green'] },
+    { id: 'raider_goblet',   name: "Raider's Goblet",           slots: ['red', 'blue', 'yellow'] },
+    { id: 'raider_chalice',  name: "Raider's Chalice",          slots: ['red', 'red', 'white'] },
+    { id: 'raider_soot',     name: "Soot-Covered Raider's Urn", slots: ['blue', 'blue', 'green'] },
+    { id: 'raider_sealed',   name: "Sealed Raider's Urn",       slots: ['green', 'green', 'red'] },
+  ],
+  recluse: [
+    { id: 'recluse_urn',      name: "Recluse's Urn",              slots: ['blue', 'green', 'green'] },
+    { id: 'recluse_goblet',   name: "Recluse's Goblet",           slots: ['red', 'blue', 'yellow'] },
+    { id: 'recluse_chalice',  name: "Recluse's Chalice",          slots: ['yellow', 'green', 'white'] },
+    { id: 'recluse_soot',     name: "Soot-Covered Recluse's Urn", slots: ['red', 'red', 'green'] },
+    { id: 'recluse_sealed',   name: "Sealed Recluse's Urn",       slots: ['green', 'green', 'red'] },
+  ],
+  executor: [
+    { id: 'executor_urn',      name: "Executor's Urn",              slots: ['red', 'yellow', 'yellow'] },
+    { id: 'executor_goblet',   name: "Executor's Goblet",           slots: ['red', 'blue', 'green'] },
+    { id: 'executor_chalice',  name: "Executor's Chalice",          slots: ['blue', 'yellow', 'white'] },
+    { id: 'executor_soot',     name: "Soot-Covered Executor's Urn", slots: ['red', 'red', 'blue'] },
+    { id: 'executor_sealed',   name: "Sealed Executor's Urn",       slots: ['yellow', 'yellow', 'red'] },
+  ],
+  revenant: [
+    { id: 'revenant_urn',      name: "Revenant's Urn",              slots: ['red', 'yellow', 'yellow'] },
+    { id: 'revenant_goblet',   name: "Revenant's Goblet",           slots: ['red', 'blue', 'green'] },
+    { id: 'revenant_chalice',  name: "Revenant's Chalice",          slots: ['blue', 'yellow', 'white'] },
+    { id: 'revenant_soot',     name: "Soot-Covered Revenant's Urn", slots: ['red', 'red', 'blue'] },
+    { id: 'revenant_sealed',   name: "Sealed Revenant's Urn",       slots: ['yellow', 'yellow', 'red'] },
+  ],
+  scholar: [
+    { id: 'scholar_urn',      name: "Scholar's Urn",              slots: ['blue', 'green', 'green'], isDLC: true },
+    { id: 'scholar_goblet',   name: "Scholar's Goblet",           slots: ['red', 'blue', 'yellow'], isDLC: true },
+    { id: 'scholar_chalice',  name: "Scholar's Chalice",          slots: ['yellow', 'green', 'white'], isDLC: true },
+    { id: 'scholar_soot',     name: "Soot-Covered Scholar's Urn", slots: ['red', 'red', 'green'], isDLC: true },
+    { id: 'scholar_sealed',   name: "Sealed Scholar's Urn",       slots: ['green', 'green', 'red'], isDLC: true },
+  ],
+  undertaker: [
+    { id: 'undertaker_urn',      name: "Undertaker's Urn",              slots: ['red', 'yellow', 'yellow'], isDLC: true },
+    { id: 'undertaker_goblet',   name: "Undertaker's Goblet",           slots: ['red', 'blue', 'green'], isDLC: true },
+    { id: 'undertaker_chalice',  name: "Undertaker's Chalice",          slots: ['red', 'red', 'white'], isDLC: true },
+    { id: 'undertaker_soot',     name: "Soot-Covered Undertaker's Urn", slots: ['red', 'red', 'blue'], isDLC: true },
+    { id: 'undertaker_sealed',   name: "Sealed Undertaker's Urn",       slots: ['yellow', 'yellow', 'red'], isDLC: true },
+  ],
+};
